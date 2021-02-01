@@ -15,19 +15,44 @@ const routes = [
       name: 'Login',
       component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
     },
+   {
+      path: '/register',
+      name: 'Register',
+      component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue')
+    },
     {
       path: '/collect',
       name: 'Collect',
     //使用meta 传参 携带需要登录的标志 auth
-    meta:{
-      auth:true
-    },
+      meta:{
+            auth:true
+        },
       component: () => import(/* webpackChunkName: "collect" */ '../views/Collect.vue')
     },
   {
     path: '/text',
     name: 'Text',
     component: () => import(/* webpackChunkName: "text" */ '../views/Text.vue')
+  },
+  {
+    path: '/center',
+    name: 'Center',
+    children:[
+        {
+          path: 'sethead',
+          name: 'Sethead',
+          component: () => import('../views/Sethead.vue')
+        },
+        {
+          path: 'setpassword',
+          name: 'Setpassword',
+          component: () => import('../views/Setpassword.vue')
+        },
+     ],
+    meta:{
+          auth:true
+      },
+    component: () => import(/* webpackChunkName: "center" */ '../views/Center.vue')
   },
   {
     path: '/element',

@@ -32,13 +32,27 @@
 							<el-menu-item index="3-4-3">选项3</el-menu-item>
 						</el-submenu>
 					</el-submenu>
-				
-					<el-menu-item index="8" class='rt'>
-						<router-link :to="{name:'Login'}">登陆</router-link>
-					</el-menu-item>
-					<el-menu-item index="9" class='rt'>
-						注册
-					</el-menu-item>
+					
+					
+					
+					<template v-if="user">
+						<el-menu-item index="9" class='rt' @click="logout">
+							退出
+						</el-menu-item>
+						<el-menu-item index="8" class='rt'>
+							<router-link :to="{name:'Center'}">{{user}}</router-link>
+						</el-menu-item>
+					</template>
+					
+					<template v-else>
+						<el-menu-item index="9" class='rt'>
+							<router-link :to="{name:'Register'}">注册</router-link>
+						</el-menu-item>
+						<el-menu-item index="8" class='rt'>
+							<router-link :to="{name:'Login'}">登陆</router-link>
+						</el-menu-item>
+					</template>
+					
 				</el-menu>
 			</el-header>
 			<el-main>
@@ -58,18 +72,46 @@
 </template>
 
 <script>
+	// import Cookies from 'js-cookie'
 	export default {
 	data() {
 		return {
-
+			user:null,
+			activeIndex2: '1'
 		};
+	},
+	created(){
+		// let user = Cookies.get('user');
+		this.$bus.$on("userlogin",_u=>{
+			this.user=_u
+		})
+		
+		let user =this.$jsCookie.get('user')
+		if(user){
+			this.user=user;
+		}
+	},
+	beforeDestroy() {
+		this.$bus.$off("userlogin")
 	},
 	methods: {
 		handleSelect(key, keyPath) {
 			console.log(key, keyPath);
+			},
+		logout(){
+			if(this.$route.path!='Home'){
+				this.$router.push({name:'Home'})
 			}
-		}
-	}
+			this.user=null;
+			// this.$jsCookie.remove('user')
+			this.$jsCookie.remove('user')
+			
+		},
+		
+	},
+		
+		
+}
 </script>
 
 <style lang="less">

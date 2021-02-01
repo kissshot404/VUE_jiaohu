@@ -21,13 +21,13 @@
 </template>
 
 <script>
-	import Cookies from 'js-cookie'
+	// import Cookies from 'js-cookie'
 	export default {
 		data() {
 			return {
 				labelPosition: 'right',
 				formLabelAlign: {
-					username: '',
+					username: '123',
 					password: '',
 				}
 			};
@@ -35,7 +35,14 @@
 		methods: {
 			onSubmit() {
 				console.log('登录成功');
-				Cookies.set('user', 'zzy0371', { expires: 7 })
+				// Cookies.set('user', 'kiss');
+				this.$jsCookie.set('user', 'kissshot')
+				this.$bus.$emit("userlogin","kissshot")
+				
+				
+				this.$root.$children[0].user= this.$jsCookie.get('user');
+				
+				console.log(this)
 				let next = this.$route.query.next;
 				if(next){
 					this.$router.push(next)

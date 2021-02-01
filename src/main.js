@@ -7,6 +7,14 @@ import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import Cookies from 'js-cookie'
+Vue.prototype.$jsCookie = Cookies
+
+let bus = new Vue()
+Vue.prototype.$bus = bus
+
+
+
 
 Vue.config.productionTip = false
 
