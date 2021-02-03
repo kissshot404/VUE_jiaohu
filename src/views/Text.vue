@@ -7,7 +7,7 @@
 				<router-link :to="{name:'Book',params:{pk:b.id}}">
 					<img :src="b.mainimg" class="image">
 					<div style="padding: 14px;">
-						<span>{{b.title}}</span>
+						<span>{{b.title|info}}</span>
 					</div>
 				</router-link>
 			</el-card>
@@ -18,12 +18,42 @@
 </template>
 
 <script>
-	import {books} from '../dat/bookdata.js'
+	// import {books} from '../dat/bookdata.js'
 	export default{
 		data() {
 			return {
-				books:books
+				books:[]
 			};
+		},
+		created() {
+			this.$axios({
+				method:"get",
+				url:"getbooks/"
+			}).then(res=>{
+				this.books=res.data.books;
+			}).catch(()=>{
+			})
+			
+			
+			// let datas = this.$mock.mock({
+			// 	'books|30':[
+			// 		{
+			// 			"title": "@CTITLE(3,4)",
+			// 			"mainimg": '@IMAGE(240x320)',
+			// 			"outline": "@CPARAGRAPH",
+			// 			"id|+1":1
+			// 		},
+			// 	]
+			// })
+			// this.books=datas.books
+			// this.books=datas.books.filter(item=>{
+			// 	return item.id == this.$route.params.pk
+			// })
+		},
+		filters:{
+			info(value){
+				return value+'t'
+			}
 		}
 	}
 

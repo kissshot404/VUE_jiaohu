@@ -11,7 +11,7 @@
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="onSubmit">登录</el-button>
-						<el-button>没有账号,去注册</el-button>
+						<el-button @click="$router.push({name:'Register'})">没有账号,去注册</el-button>
 					</el-form-item>
 				</el-form>
 			</el-col>

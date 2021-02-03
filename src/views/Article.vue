@@ -1,5 +1,5 @@
 <template>
-	<div class="articke">
+	<div class="articke" v-if='article'>
 		<el-container>
 		
 			<el-main>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-	import {articles} from '../dat/bookdata.js'
+	// import {articles} from '../dat/bookdata.js'
 	export default{
 		data(){
 			return{
@@ -27,9 +27,28 @@
 			}
 		},
 		created(){
-			this.article=articles.filter((item)=>{
-				return item.id==this.$route.params.pk;
-			})[0]
+			this.$axios(`article/${this.$route.params.pk}/`).then(res=>{
+				this.article=res.data;
+			})
+			
+			
+			
+			// let datas = this.$mock.mock({
+				
+			// 	'articles|150':[
+			// 		{
+			// 			"id|+1": 101,
+			// 			"title": "@CTITLE",
+			// 			"bookid": '@NATURAL(1,30)',
+			// 			"content": "@CPARAGRAPH(10)"
+			// 		},
+			// 	]
+			// })
+			
+			
+			// this.article=datas.articles.filter((item)=>{
+			// 	return item.id==this.$route.params.pk;
+			// })[0]
 			
 
 		},

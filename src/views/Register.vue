@@ -8,7 +8,9 @@
 			]">
 				<el-input v-model="ruleForm.email"></el-input>
 			</el-form-item>
-
+			<el-form-item label="昵称" prop="name">
+				<el-input type="text" v-model="ruleForm.name" autocomplete="off"></el-input>
+			</el-form-item>
 
 			<el-form-item label="密码" prop="pass">
 				<el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
@@ -17,7 +19,7 @@
 				<el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+				<el-button type="primary" @click="submitForm">提交</el-button>
 				<el-button @click="$router.push({name:'Login'})">已有账号,去登录</el-button>
 			</el-form-item>
 		</el-form>
@@ -46,13 +48,25 @@
 					callback();
 				}
 			};
+			var validatename = (rule, value, callback) => {
+				if (value === '') {
+					callback(new Error('请输入昵称'));
+				} else {
+					callback();
+				}
+			};
 			return {
 				ruleForm: {
+					name:'',
 					pass: '',
 					checkPass: '',
 					email: ''
 				},
 				rules: {
+					name: [{
+						validator: validatename,
+						trigger: 'blur'
+					}],
 					pass: [{
 						validator: validatePass,
 						trigger: 'blur'
@@ -66,16 +80,33 @@
 			};
 		},
 		methods: {
-			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						alert('submit!');
-					} else {
-						console.log('error submit!!');
-						return false;
+			submitForm() {
+				this.$axios({
+					url:"user/",
+					method:'post',
+					data:{
+						username:this.ruleForm.name,
+						email:this.ruleForm.email,
+						password:this.ruleForm.pass,
+						password2:this.ruleForm.checkPass,
+						
 					}
+				}).then(res=>{
+					console.log('注册成功',res);
+					this.$message('注册成功')
 					this.$router.push({name:'Login'})
-				});
+				}).catch(err=>{
+					console.log('错误原因',err)
+				})
+				// this.$refs[formName].validate((valid) => {
+				// 	if (valid) {
+				// 		alert('submit!');
+				// 	} else {
+				// 		console.log('error submit!!');
+				// 		return false;
+				// 	}
+				// 	this.$router.push({name:'Login'})
+				// });
 			},
 
 		}
